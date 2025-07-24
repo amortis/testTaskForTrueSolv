@@ -63,13 +63,35 @@
         </div>
 
         <!-- Main content area -->
-        <div class="slds-card__body slds-card__body_inner">
-            <!-- Filter and Search section -->
-
-
-            <!-- Items display area -->
-
+        <div class="slds-p-around_medium">
+            <c-item-list
+                    onitemselected={handleItemSelected}
+                    onaddtocart={handleAddToCart}
+                    account-id={accountData.Id}>
+            </c-item-list>
         </div>
+
+<!--        &lt;!&ndash; Модальные окна &ndash;&gt;-->
+<!--        <template if:true={showItemDetailsModal}>-->
+<!--            <c-item-details-modal-->
+<!--                    item={selectedItem}-->
+<!--                    onclose={handleCloseItemDetails}>-->
+<!--            </c-item-details-modal>-->
+<!--        </template>-->
+<!--        <template if:true={showCartModal}>-->
+<!--            <c-cart-modal-->
+<!--                    items={cartItems}-->
+<!--                    onclose={handleCloseCart}-->
+<!--                    oncheckout={handleCheckout}>-->
+<!--            </c-cart-modal>-->
+<!--        </template>-->
+<!--        <template if:true={showCreateItemModal}>-->
+<!--            <c-create-item-modal-->
+<!--                    onclose={handleCloseCreateItem}-->
+<!--                    onitemcreated={handleItemCreated}>-->
+<!--            </c-create-item-modal>-->
+<!--        </template>-->
+
     </div>
 
     <!-- Modals will be added here -->

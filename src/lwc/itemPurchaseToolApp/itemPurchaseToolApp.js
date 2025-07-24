@@ -19,6 +19,7 @@ export default class ItemPurchaseToolApp extends LightningElement {
     }
 
     // Wire methods for reactive data loading
+    // noinspection JSAnnotator
     @wire(getAccountData, { accountId: '$recordId' })
     wiredAccountData({ error, data }) {
         if (data) {

@@ -2,21 +2,23 @@
 <project version="4">
   <component name="ApexVcsIndex">
     <index-record>
-      <option name="path" value="/src/lwc/itemPurchaseToolApp/itemPurchaseToolApp.js-meta.xml" />
+      <option name="path" value="/src/aura/itemPurchaseToolAppContainer/itemPurchaseToolAppContainer.app-meta.xml" />
+      <option name="type" value="NEW" />
+    </index-record>
+    <index-record>
+      <option name="path" value="/src/lwc/helloWorld/helloWorld.html" />
+      <option name="type" value="MODIFIED" />
     </index-record>
     <index-record>
       <option name="path" value="/src/aura/itemPurchaseToolAppContainer/itemPurchaseToolAppContainer.app" />
       <option name="type" value="NEW" />
     </index-record>
     <index-record>
-      <option name="path" value="/src/lwc/itemPurchaseToolApp/itemPurchaseToolApp.js" />
+      <option name="path" value="/src/lwc/itemList/itemList.js" />
     </index-record>
     <index-record>
-      <option name="path" value="/src/aura/itemPurchaseToolAppContainer/itemPurchaseToolAppContainer.app-meta.xml" />
-      <option name="type" value="NEW" />
-    </index-record>
-    <index-record>
-      <option name="path" value="/src/lwc/itemPurchaseToolApp/itemPurchaseToolApp.html" />
+      <option name="path" value="/src/classes/itemController.cls" />
+      <option name="type" value="MODIFIED" />
     </index-record>
   </component>
 </project>

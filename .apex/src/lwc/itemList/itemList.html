@@ -1,0 +1,54 @@
+<template>
+    <div class="slds-p-around_medium">
+        <!-- Фильтры -->
+        <div class="slds-grid slds-gutters slds-m-bottom_medium">
+            <div class="slds-col">
+                <lightning-input type="search" label="Поиск" value={searchKey} onchange={handleSearchChange}></lightning-input>
+            </div>
+            <div class="slds-col">
+                <lightning-combobox
+                        name="family"
+                        label="Family"
+                        value={selectedFamily}
+                        options={familyOptions}
+                        onchange={handleFamilyChange}>
+                </lightning-combobox>
+            </div>
+            <div class="slds-col">
+                <lightning-combobox
+                        name="type"
+                        label="Type"
+                        value={selectedType}
+                        options={typeOptions}
+                        onchange={handleTypeChange}>
+                </lightning-combobox>
+            </div>
+            <div class="slds-col slds-align-bottom">
+                <span class="slds-badge">Found: {filteredItems.length}</span>
+            </div>
+        </div>
+
+<!--        &lt;!&ndash; Список товаров &ndash;&gt;-->
+<!--        <div class="slds-grid slds-wrap">-->
+<!--            <template for:each={filteredItems} for:item="item">-->
+<!--                <div key={item.Id} class="slds-col slds-size_1-of-3 slds-p-around_small">-->
+<!--                    <c-item-tile-->
+<!--                            item={item}-->
+<!--                            ondetails={handleItemDetails}-->
+<!--                            onaddtocart={handleAddToCart}>-->
+<!--                    </c-item-tile>-->
+<!--                </div>-->
+<!--            </template>-->
+<!--            <template if:true={isLoading}>-->
+<!--                <div class="slds-col">-->
+<!--                    <lightning-spinner alternative-text="Loading..."></lightning-spinner>-->
+<!--                </div>-->
+<!--            </template>-->
+<!--            <template if:true={noResults}>-->
+<!--                <div class="slds-col">-->
+<!--                    <div class="slds-text-color_weak">No available items.</div>-->
+<!--                </div>-->
+<!--            </template>-->
+<!--        </div>-->
+    </div>
+</template>
