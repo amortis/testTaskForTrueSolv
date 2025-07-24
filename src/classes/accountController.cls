@@ -1,5 +1,10 @@
 public class accountController {
 
+	/**
+     * Get Account details for display in Item Purchase Tool
+     * @param accountId The ID of the Account record
+     * @return Account record with Name, AccountNumber, and Industry fields
+     */
 	@AuraEnabled
 	public static Account getAccountData(Id accountId){
 		try {
