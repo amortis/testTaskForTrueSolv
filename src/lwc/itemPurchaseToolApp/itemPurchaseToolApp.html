@@ -1,0 +1,79 @@
+<template>
+    <!-- Main container -->
+    <div class="slds-card">
+        <!-- Header navigation bar -->
+        <div class="slds-card__header slds-grid slds-grid_align-spread slds-p-around_medium">
+            <!-- Left side - Create Item button (only for managers) -->
+            <div class="slds-col">
+                <template if:true={isManager}>
+                    <lightning-button
+                            variant="neutral"
+                            label="Create Item"
+                            onclick={handleCreateItem}
+                            class="slds-m-right_small">
+                    </lightning-button>
+                </template>
+            </div>
+
+            <!-- Center - Account Information -->
+            <div class="slds-col slds-grid slds-grid_align-center">
+                <div class="slds-text-align_center">
+                    <template if:true={accountData}>
+                        <div class="slds-grid slds-grid_vertical-align-center slds-gutters">
+                            <div class="slds-col">
+                                <span class="slds-text-heading_small slds-m-right_large">
+                                    <strong>Account Name:</strong> {accountData.Name}
+                                </span>
+                            </div>
+                            <div class="slds-col">
+                                <span class="slds-text-heading_small slds-m-right_large">
+                                    <strong>Account Number:</strong> {accountData.AccountNumber}
+                                </span>
+                            </div>
+                            <div class="slds-col">
+                                <span class="slds-text-heading_small">
+                                    <strong>Account Industry:</strong> {accountData.Industry}
+                                </span>
+                            </div>
+                        </div>
+                    </template>
+                    <template if:false={accountData}>
+                        <div class="slds-text-color_weak">Loading account information...</div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Right side - Cart button -->
+            <div class="slds-col slds-text-align_right">
+                <lightning-button
+                        variant="brand"
+                        label="Cart"
+                        onclick={handleOpenCart}
+                        class="slds-m-left_small">
+                    <lightning-icon
+                            icon-name="utility:cart"
+                            size="x-small"
+                            class="slds-m-right_x-small">
+                    </lightning-icon>
+                </lightning-button>
+                <template if:true={cartItemCount}>
+                    <lightning-badge label={cartItemCount} class="slds-m-left_x-small"></lightning-badge>
+                </template>
+            </div>
+        </div>
+
+        <!-- Main content area -->
+        <div class="slds-card__body slds-card__body_inner">
+            <!-- Filter and Search section -->
+
+
+            <!-- Items display area -->
+
+        </div>
+    </div>
+
+    <!-- Modals will be added here -->
+    <!-- Item Details Modal -->
+    <!-- Cart Modal -->
+    <!-- Create Item Modal -->
+</template>

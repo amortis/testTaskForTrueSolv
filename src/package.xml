@@ -2,6 +2,8 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>helloWorldController</members>
+        <members>accountController</members>
+        <members>managerController</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -505,11 +507,12 @@
     </types>
     <types>
         <members>helloWorld</members>
+        <members>itemPurchaseToolApp</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
         <members>Case</members>
         <name>Workflow</name>
     </types>
-    <version>64.0</version>
+    <version>62.0</version>
 </Package>
