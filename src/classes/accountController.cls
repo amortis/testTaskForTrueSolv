@@ -5,7 +5,7 @@ public class accountController {
      * @param accountId The ID of the Account record
      * @return Account record with Name, AccountNumber, and Industry fields
      */
-	@AuraEnabled
+	@AuraEnabled(cacheable=true)
 	public static Account getAccountData(Id accountId){
 		try {
 			if (accountId == null) {

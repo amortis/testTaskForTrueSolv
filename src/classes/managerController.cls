@@ -4,7 +4,7 @@ public class managerController {
      * Check if the current user is a manager
      * @return Boolean indicating if current user has IsManager__c = true
      */
-	@AuraEnabled
+	@AuraEnabled(cacheable=true)
 	public static Boolean isCurrentUserManager() {
 		try {
 			Id currentUserId = UserInfo.getUserId();

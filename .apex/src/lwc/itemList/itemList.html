@@ -28,27 +28,27 @@
             </div>
         </div>
 
-<!--        &lt;!&ndash; Список товаров &ndash;&gt;-->
-<!--        <div class="slds-grid slds-wrap">-->
-<!--            <template for:each={filteredItems} for:item="item">-->
-<!--                <div key={item.Id} class="slds-col slds-size_1-of-3 slds-p-around_small">-->
-<!--                    <c-item-tile-->
-<!--                            item={item}-->
-<!--                            ondetails={handleItemDetails}-->
-<!--                            onaddtocart={handleAddToCart}>-->
-<!--                    </c-item-tile>-->
-<!--                </div>-->
-<!--            </template>-->
-<!--            <template if:true={isLoading}>-->
-<!--                <div class="slds-col">-->
-<!--                    <lightning-spinner alternative-text="Loading..."></lightning-spinner>-->
-<!--                </div>-->
-<!--            </template>-->
-<!--            <template if:true={noResults}>-->
-<!--                <div class="slds-col">-->
-<!--                    <div class="slds-text-color_weak">No available items.</div>-->
-<!--                </div>-->
-<!--            </template>-->
-<!--        </div>-->
+        <!-- Список товаров -->
+        <div class="slds-grid slds-wrap">
+            <template for:each={filteredItems} for:item="item">
+                <div key={item.Id} class="slds-col slds-size_1-of-3 slds-p-around_small">
+                    <c-item-tile
+                            item={item}
+                            ondetails={handleItemDetails}
+                            onaddtocart={handleAddToCart}>
+                    </c-item-tile>
+                </div>
+            </template>
+            <template if:true={isLoading}>
+                <div class="slds-col">
+                    <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+                </div>
+            </template>
+            <template if:true={noResults}>
+                <div class="slds-col">
+                    <div class="slds-text-color_weak">No available items.</div>
+                </div>
+            </template>
+        </div>
     </div>
 </template>
