@@ -16,7 +16,6 @@ public class accountController {
 					SELECT Id, Name, AccountNumber, Industry
 					FROM Account
 					WHERE Id = :accountId
-					WITH SECURITY_ENFORCED
 					LIMIT 1
 			];
 

@@ -1,6 +1,9 @@
 <template>
+
+
     <!-- Main container -->
     <div class="slds-card">
+
         <!-- Header navigation bar -->
         <div class="slds-card__header slds-grid slds-grid_align-spread slds-p-around_medium">
             <!-- Left side - Create Item button (only for managers) -->
@@ -18,27 +21,27 @@
             <!-- Center - Account Information -->
             <div class="slds-col slds-grid slds-grid_align-center">
                 <div class="slds-text-align_center">
-                    <template if:true={accountData}>
+                    <template if:false={isLoading}>
                         <div class="slds-grid slds-grid_vertical-align-center slds-gutters">
                             <div class="slds-col">
                                 <span class="slds-text-heading_small slds-m-right_large">
-                                    <strong>Account Name:</strong> {accountData.Name}
+                                    <strong>Account Name:</strong> {accountName}
                                 </span>
                             </div>
                             <div class="slds-col">
                                 <span class="slds-text-heading_small slds-m-right_large">
-                                    <strong>Account Number:</strong> {accountData.AccountNumber}
+                                    <strong>Account Number:</strong> {accountNumber}
                                 </span>
                             </div>
                             <div class="slds-col">
                                 <span class="slds-text-heading_small">
-                                    <strong>Account Industry:</strong> {accountData.Industry}
+                                    <strong>Account Industry:</strong> {accountIndustry}
                                 </span>
                             </div>
                         </div>
                     </template>
-                    <template if:false={accountData}>
-                        <div class="slds-text-color_weak">Loading account information...</div>
+                    <template if:true={isLoading}>
+                        <div class="slds-text-color_weak">Loading account information...{error}</div>
                     </template>
                 </div>
             </div>
@@ -63,13 +66,19 @@
         </div>
 
         <!-- Main content area -->
-        <div class="slds-p-around_medium">
-            <c-item-list
-                    onitemselected={handleItemSelected}
-                    onaddtocart={handleAddToCart}
-                    account-id={accountData.Id}>
-            </c-item-list>
-        </div>
+<!--        <div class="slds-p-around_medium">-->
+<!--            <c-item-list-->
+<!--                    onitemselected={handleItemSelected}-->
+<!--                    onaddtocart={handleAddToCart}-->
+<!--                    account-id={accountData.Id}>-->
+<!--            </c-item-list>-->
+<!--        </div>-->
+        <template if:false={isLoading}>
+            <c-item-list account-id={userId}></c-item-list>
+        </template>
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </template>
 
 <!--        &lt;!&ndash; Модальные окна &ndash;&gt;-->
 <!--        <template if:true={showItemDetailsModal}>-->

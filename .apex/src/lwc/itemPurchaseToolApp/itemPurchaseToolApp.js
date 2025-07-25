@@ -1,57 +1,74 @@
-import {LightningElement, track, api, wire} from 'lwc';
+import { LightningElement, wire, api, track } from 'lwc';
+import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 
-import isCurrentUserManager from '@salesforce/apex/managerController.isCurrentUserManager';
-import getAccountData from '@salesforce/apex/accountController.getAccountData';
+// Поля для текущего Account (с которого открыт компонент)
+import ACCOUNT_NAME_FIELD from '@salesforce/schema/Account.Name';
+import ACCOUNT_NUMBER_FIELD from '@salesforce/schema/Account.AccountNumber';
+import ACCOUNT_INDUSTRY_FIELD from '@salesforce/schema/Account.Industry';
 
+// Поля для проверки менеджера (User)
+import USER_ID from '@salesforce/user/Id';
+import USER_IS_MANAGER_FIELD from '@salesforce/schema/User.IsManager__c';
 
 export default class ItemPurchaseToolApp extends LightningElement {
+    @api recordId; // ID текущего Account (получает автоматически при открытии из страницы Account)
 
-    @api recordId;
-    // getAccountData
-    @track accountData = null;
+    @track error = 'def';
 
-    // isCurrentUserManager
-    @track isManager = null;
 
-    // Lifecycle hooks
-    connectedCallback() {
-        this.loadInitialData();
+    // Данные текущего Account
+    @wire(getRecord, {
+        recordId: '$recordId',
+        fields: [
+            ACCOUNT_NAME_FIELD,
+            ACCOUNT_NUMBER_FIELD,
+            ACCOUNT_INDUSTRY_FIELD
+        ]
+    }) account;
+
+    // Вычисляемые свойства для Account
+    get accountName() {
+        return this.account.data ? getFieldValue(this.account.data, ACCOUNT_NAME_FIELD) : 'Loading...';
     }
 
-    // Wire methods for reactive data loading
-    // noinspection JSAnnotator
-    @wire(getAccountData, { accountId: '$recordId' })
-    wiredAccountData({ error, data }) {
-        if (data) {
-            this.accountData = data;
-        } else if (error) {
-            console.error('Error loading account data:', error);
-        }
+    get accountNumber() {
+        return this.account.data ? getFieldValue(this.account.data, ACCOUNT_NUMBER_FIELD) : '';
+    }
+
+    get accountIndustry() {
+        return this.account.data ? getFieldValue(this.account.data, ACCOUNT_INDUSTRY_FIELD) : '';
     }
 
 
 
+    // Проверка, является ли пользователь менеджером
+    @wire(getRecord, {
+        recordId: USER_ID,
+        fields: [USER_IS_MANAGER_FIELD]
+    }) user;
 
-    // Event handlers
-    async loadInitialData() {
-        try {
-            // Load manager status
-            const managerStatus = await isCurrentUserManager();
-            this.isManager = managerStatus;
-        } catch (error) {
-            console.error('Error loading initial data:', error);
-        }
+
+
+    // Проверка менеджера
+    get isManager() {
+        return this.user.data ? getFieldValue(this.user.data, USER_IS_MANAGER_FIELD) : false;
     }
 
-    handleCreateItem() {
-        // Open create item modal
-        // This will be implemented when we add the modal component
-        console.log('Create Item clicked');
+    // Состояние загрузки
+    get isLoading() {
+        this.error = getFieldValue(this.account.data, ACCOUNT_NAME_FIELD) + '1111111';
+        return this.account.isLoading || this.user.isLoading || !this.account.data || !this.user.data;
     }
 
-    handleOpenCart() {
-        // Open cart modal
-        // This will be implemented when we add the modal component
-        console.log('Cart clicked');
+    get userId(){
+        return USER_ID;
+    }
+
+    get accountLoaded(){
+        return !this.isLoading;
+    }
+
+    get hasError() {
+        return this.account.error || this.user.error;
     }
 }

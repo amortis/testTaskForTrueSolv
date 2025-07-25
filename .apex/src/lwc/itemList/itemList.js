@@ -67,6 +67,7 @@ export default class ItemList extends LightningElement {
 
     getUniqueOptions(items, field) {
         const values = [...new Set(items.map(i => i[field]).filter(Boolean))];
+        // noinspection JSAnnotator
         return [{ label: 'All', value: '' }, ...values.map(v => ({ label: v, value: v }))];
     }
 
