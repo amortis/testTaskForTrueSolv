@@ -99,8 +99,14 @@ export default class ItemList extends LightningElement {
     }
 
     handleItemDetails(event) {
-        const item = event.detail;
-        this.dispatchEvent(new CustomEvent('itemselected', { detail: item }));
+        const itemId = event.detail;
+        console.log('Item details clicked, itemId:', itemId);
+        // Найти полный объект товара по ID
+        const item = this.items.find(i => i.Id === itemId);
+        console.log('Found item:', item);
+        if (item) {
+            this.dispatchEvent(new CustomEvent('itemselected', { detail: item }));
+        }
     }
 
     handleAddToCart(event) {

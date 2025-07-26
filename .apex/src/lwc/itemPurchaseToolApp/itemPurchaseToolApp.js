@@ -1,6 +1,7 @@
 import { LightningElement, wire, api, track } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 
+
 // Поля для текущего Account (с которого открыт компонент)
 import ACCOUNT_NAME_FIELD from '@salesforce/schema/Account.Name';
 import ACCOUNT_NUMBER_FIELD from '@salesforce/schema/Account.AccountNumber';
@@ -11,10 +12,12 @@ import USER_ID from '@salesforce/user/Id';
 import USER_IS_MANAGER_FIELD from '@salesforce/schema/User.IsManager__c';
 
 export default class ItemPurchaseToolApp extends LightningElement {
-    @api recordId; // ID текущего Account (получает автоматически при открытии из страницы Account)
+    @api recordId;
 
     @track error = 'def';
     @track showCreateItemModal = false;
+    @track showItemDetailModal = false;
+    @track selectedItemIdForDetails;
 
 
     // Данные текущего Account
@@ -81,10 +84,18 @@ export default class ItemPurchaseToolApp extends LightningElement {
 
     handleCloseCreateItem() {
         this.showCreateItemModal = false;
+        // TODO make page reload
     }
 
-    handleItemCreated() {
-        this.showCreateItemModal = false;
-        // TODO: Update item list
+    handleItemSelected(event) {
+        console.log('Item selected:', event.detail);
+        this.selectedItemIdForDetails = event.detail.Id;
+        this.showItemDetailModal = true;
+        console.log('Modal should be open now, selectedItemIdForDetails:', this.selectedItemIdForDetails);
     }
+    handleCloseItemDetailModal() {
+        this.showItemDetailModal = false;
+        this.selectedItemIdForDetails = null;
+    }
+
 }

@@ -77,19 +77,18 @@
 <!--            </c-item-list>-->
 <!--        </div>-->
         <template if:false={isLoading}>
-            <c-item-list account-id={userId}></c-item-list>
+            <c-item-list account-id={userId} onitemselected={handleItemSelected}></c-item-list>
         </template>
         <template if:true={isLoading}>
             <lightning-spinner alternative-text="Loading..."></lightning-spinner>
         </template>
 
-<!--        &lt;!&ndash; Модальные окна &ndash;&gt;-->
-<!--        <template if:true={showItemDetailsModal}>-->
-<!--            <c-item-details-modal-->
-<!--                    item={selectedItem}-->
-<!--                    onclose={handleCloseItemDetails}>-->
-<!--            </c-item-details-modal>-->
-<!--        </template>-->
+        <!-- Modal windows -->
+        <!-- Item detail modal window -->
+        <template if:true={showItemDetailModal}>
+            <c-item-detail-modal item-id={selectedItemIdForDetails} onclose={handleCloseItemDetailModal}></c-item-detail-modal>
+        </template>
+
 <!--        <template if:true={showCartModal}>-->
 <!--            <c-cart-modal-->
 <!--                    items={cartItems}-->

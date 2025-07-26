@@ -1,0 +1,35 @@
+<template>
+    <section class="slds-modal slds-fade-in-open" aria-modal="true" role="dialog" tabindex="-1">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <h2 class="slds-modal__title">Item Details</h2>
+
+            </header>
+            <div class="slds-modal__content slds-p-around_medium">
+                <lightning-record-view-form record-id={itemId} object-api-name="Item__c">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-2 slds-p-around_small slds-text-align_center">
+                            <template if:true={imageUrl}>
+                                <div class="item-detail-image-container slds-m-bottom_small">
+                                    <img src={imageUrl} alt="Item Image" class="item-detail-image"/>
+                                </div>
+                            </template>
+                            <lightning-output-field field-name="Name"></lightning-output-field>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                            <lightning-output-field field-name="Description__c"></lightning-output-field>
+                            <lightning-output-field field-name="Type__c"></lightning-output-field>
+                            <lightning-output-field field-name="Family__c"></lightning-output-field>
+                            <lightning-output-field field-name="Price__c"></lightning-output-field>
+                        </div>
+                    </div>
+                </lightning-record-view-form>
+            </div>
+            <footer class="slds-modal__footer">
+                <lightning-button label="Close" onclick={handleClose}></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

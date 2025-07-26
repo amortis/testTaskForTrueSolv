@@ -1,6 +1,6 @@
 <template>
     <div class="slds-p-around_medium">
-        <!-- Фильтры -->
+        <!-- Filters -->
         <div class="slds-grid slds-gutters slds-m-bottom_medium">
             <div class="slds-col">
                 <lightning-input type="search" label="Поиск" value={searchKey} onchange={handleSearchChange}></lightning-input>
@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <!-- Список товаров -->
+        <!-- Item list -->
         <div class="slds-grid slds-wrap">
             <template for:each={filteredItems} for:item="item">
                 <div key={item.Id} class="slds-col slds-size_1-of-3 slds-p-around_small">
