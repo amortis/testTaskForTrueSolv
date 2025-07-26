@@ -1,5 +1,6 @@
 import { LightningElement, wire, api, track } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 
 // Поля для текущего Account (с которого открыт компонент)
@@ -16,8 +17,12 @@ export default class ItemPurchaseToolApp extends LightningElement {
 
     @track error = 'def';
     @track showCreateItemModal = false;
+
+    @track showCartModal = false;
+
     @track showItemDetailModal = false;
     @track selectedItemIdForDetails;
+    @track cartItems = [];
 
 
     // Данные текущего Account
@@ -78,6 +83,12 @@ export default class ItemPurchaseToolApp extends LightningElement {
         return this.account.error || this.user.error;
     }
 
+    get cartItemCount() {
+        return this.cartItems.length > 0 ? this.cartItems.length.toString() : null;
+    }
+
+
+    // Create Item window
     handleCreateItem() {
         this.showCreateItemModal = true;
     }
@@ -87,15 +98,45 @@ export default class ItemPurchaseToolApp extends LightningElement {
         // TODO make page reload
     }
 
+    // Item Details
     handleItemSelected(event) {
-        console.log('Item selected:', event.detail);
         this.selectedItemIdForDetails = event.detail.Id;
         this.showItemDetailModal = true;
-        console.log('Modal should be open now, selectedItemIdForDetails:', this.selectedItemIdForDetails);
     }
     handleCloseItemDetailModal() {
         this.showItemDetailModal = false;
         this.selectedItemIdForDetails = null;
+    }
+
+    // Cart
+    handleShowCart() {
+        this.showCartModal = true;
+    }
+
+    // Handles closing the cart modal
+    handleCloseCart() {
+        this.showCartModal = false;
+    }
+
+    // Add item to cart
+    handleAddToCart(event) {
+        const item = event.detail;
+        const existingItem = this.cartItems.find(cartItem => cartItem.Id === item.Id);
+        
+        if (existingItem) {
+            existingItem.quantity = (existingItem.quantity || 1) + 1;
+            this.cartItems = [...this.cartItems]; // Force reactivity
+
+        } else {
+            this.cartItems.push({ ...item, quantity: 1 });
+        }
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: 'Item added to cart',
+                message: 'Item"' + existingItem.Name + '" added to cart.',
+                variant: 'success'
+            })
+        );
     }
 
 }

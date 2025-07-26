@@ -54,7 +54,7 @@
                 <lightning-button
                         variant="brand"
                         label="Cart"
-                        onclick={handleOpenCart}
+                        onclick={handleShowCart}
                         class="slds-m-left_small">
                     <lightning-icon
                             icon-name="utility:cart"
@@ -77,25 +77,25 @@
 <!--            </c-item-list>-->
 <!--        </div>-->
         <template if:false={isLoading}>
-            <c-item-list account-id={userId} onitemselected={handleItemSelected}></c-item-list>
+            <c-item-list account-id={userId} onitemselected={handleItemSelected} onaddtocart={handleAddToCart}></c-item-list>
         </template>
         <template if:true={isLoading}>
             <lightning-spinner alternative-text="Loading..."></lightning-spinner>
         </template>
 
         <!-- Modal windows -->
+
         <!-- Item detail modal window -->
         <template if:true={showItemDetailModal}>
             <c-item-detail-modal item-id={selectedItemIdForDetails} onclose={handleCloseItemDetailModal}></c-item-detail-modal>
         </template>
 
-<!--        <template if:true={showCartModal}>-->
-<!--            <c-cart-modal-->
-<!--                    items={cartItems}-->
-<!--                    onclose={handleCloseCart}-->
-<!--                    oncheckout={handleCheckout}>-->
-<!--            </c-cart-modal>-->
-<!--        </template>-->
+        <!-- Cart Modal -->
+        <template if:true={showCartModal}>
+            <c-cart-modal
+                    initial-cart-items={cartItems} onclose={handleCloseCart}
+                    oncheckout={handleCartCheckout} ></c-cart-modal>
+        </template>
 <!--        <template if:true={showCreateItemModal}>-->
 <!--            <c-create-item-modal-->
 <!--                    onclose={handleCloseCreateItem}-->
