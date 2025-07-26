@@ -1,12 +1,12 @@
 .item-tile {
-    width: 350px;
-    height: 450px;
+    width: 550px;
+    height: 650px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 .image-container {
-    height: 250px;
+    height: 450px;
     width: 100%;
     display: flex;
     justify-content: center;

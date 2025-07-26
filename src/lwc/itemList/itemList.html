@@ -1,54 +1,81 @@
 <template>
     <div class="slds-p-around_medium">
-        <!-- Filters -->
-        <div class="slds-grid slds-gutters slds-m-bottom_medium">
-            <div class="slds-col">
-                <lightning-input type="search" label="Поиск" value={searchKey} onchange={handleSearchChange}></lightning-input>
-            </div>
-            <div class="slds-col">
-                <lightning-combobox
-                        name="family"
-                        label="Family"
-                        value={selectedFamily}
-                        options={familyOptions}
-                        onchange={handleFamilyChange}>
-                </lightning-combobox>
-            </div>
-            <div class="slds-col">
-                <lightning-combobox
-                        name="type"
-                        label="Type"
-                        value={selectedType}
-                        options={typeOptions}
-                        onchange={handleTypeChange}>
-                </lightning-combobox>
-            </div>
-            <div class="slds-col slds-align-bottom">
-                <span class="slds-badge">Found: {filteredItems.length}</span>
-            </div>
+        <!-- Search -->
+        <div class="slds-m-bottom_medium">
+            <lightning-input
+                    type="search"
+                    label="Search"
+                    value={searchKey}
+                    onchange={handleSearchChange}
+                    class="slds-size_1-of-1">
+            </lightning-input>
         </div>
 
-        <!-- Item list -->
-        <div class="slds-grid slds-wrap">
-            <template for:each={filteredItems} for:item="item">
-                <div key={item.Id} class="slds-col slds-size_1-of-3 slds-p-around_small">
-                    <c-item-tile
-                            item={item}
-                            ondetails={handleItemDetails}
-                            onaddtocart={handleAddToCart}>
-                    </c-item-tile>
+        <!-- Main layout: Items + Filters -->
+        <div class="slds-grid slds-gutters">
+            <!-- Left: Item List -->
+            <div class="slds-col slds-size_2-of-3">
+                <div class="slds-grid slds-wrap">
+                    <template for:each={filteredItems} for:item="item">
+                        <div key={item.Id} class="slds-col slds-size_1-of-2 slds-p-around_small">
+                            <c-item-tile
+                                    item={item}
+                                    ondetails={handleItemDetails}
+                                    onaddtocart={handleAddToCart}>
+                            </c-item-tile>
+                        </div>
+                    </template>
+                    <template if:true={isLoading}>
+                        <div class="slds-col">
+                            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+                        </div>
+                    </template>
+                    <template if:true={noResults}>
+                        <div class="slds-col">
+                            <div class="slds-text-color_weak">No available items.</div>
+                        </div>
+                    </template>
                 </div>
-            </template>
-            <template if:true={isLoading}>
-                <div class="slds-col">
-                    <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+            </div>
+
+            <!-- Right: Filters on gray box -->
+            <div class="slds-col slds-size_1-of-3">
+                <div class="slds-box slds-theme_shade filter-panel">
+                    <!-- FAMILY FILTER -->
+                    <div class="slds-m-bottom_medium filter-checkbox">
+                        <p class="slds-text-title_caps slds-m-bottom_small">Family</p>
+                        <template for:each={familyOptions} for:item="option">
+                            <lightning-input
+                                    key={option.value}
+                                    type="checkbox"
+                                    label={option.label}
+                                    data-value={option.value}
+                                    checked={option.isChecked}
+                                    onchange={handleFamilyChange}>
+                            </lightning-input>
+                        </template>
+                    </div>
+
+                    <!-- TYPE FILTER -->
+                    <div class="slds-m-bottom_medium filter-checkbox">
+                        <p class="slds-text-title_caps slds-m-bottom_small">Type</p>
+                        <template for:each={typeOptions} for:item="option">
+                            <lightning-input
+                                    key={option.value}
+                                    type="checkbox"
+                                    label={option.label}
+                                    data-value={option.value}
+                                    checked={option.isChecked}
+                                    onchange={handleTypeChange}>
+                            </lightning-input>
+                        </template>
+                    </div>
+
+                    <div class="slds-m-top_medium">
+                        <span class="slds-badge">Found: {filteredItems.length}</span>
+                    </div>
                 </div>
-            </template>
-            <template if:true={noResults}>
-                <div class="slds-col">
-                    <div class="slds-text-color_weak">No available items.</div>
-                </div>
-            </template>
+            </div>
         </div>
     </div>
 </template>

@@ -1,10 +1,14 @@
 import { LightningElement, api, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import createPurchaseAndPurchaseLines from '@salesforce/apex/PurchaseController.createPurchaseAndPurchaseLines';
 
 export default class CartModal extends LightningElement {
     @api initialCartItems = []; // Initial items passed from parent
     @track cartItems = []; // Internal state for cart items, including quantity and total price
     @track overallCartTotal = 0.00;
+
+    @api accountId;
+
 
     connectedCallback() {
         // Initialize internal cartItems from initialCartItems
@@ -67,35 +71,69 @@ export default class CartModal extends LightningElement {
     }
 
     // Handles the checkout process
-    handleCheckout() {
-        if (this.cartItems.length === 0) {
+    async handleCheckout() {
+
+        if (!this.accountId) {
             this.dispatchEvent(
                 new ShowToastEvent({
-                    title: 'Cart is Empty',
-                    message: 'Please add items to your cart before checking out.',
-                    variant: 'warning'
+                    title: 'Error',
+                    message: 'Account ID is missing. Cannot proceed with checkout.',
+                    variant: 'error'
                 })
             );
             return;
         }
 
-        // Dispatch a 'checkout' event to the parent, passing the current cart items
-        this.dispatchEvent(new CustomEvent('checkout', {
-            detail: this.cartItems.map(cartItem => ({
-                itemId: cartItem.item.Id,
-                quantity: cartItem.quantity,
-                price: cartItem.item.Price__c // You might want to pass the current price as well
-            }))
+
+
+        // Map cartItems to the CartItemWrapper structure expected by Apex
+        const itemsForApex = this.cartItems.map(item => ({
+            itemId: item.item.Id, //  item.Id holds the Item__c record ID
+            amount: item.quantity, // item.quantity holds the amount/quantity
+            unitCost: item.Price__c //  item.Price__c holds the unit cost
         }));
 
-        this.dispatchEvent(
-            new ShowToastEvent({
-                title: 'Checkout Initiated',
-                message: 'Proceeding to checkout with ' + this.cartItems.length + ' items.',
-                variant: 'success'
-            })
-        );
-        // Optionally close the modal after dispatching checkout event
-        // this.handleClose();
+        try {
+            const purchaseId = await createPurchaseAndPurchaseLines({
+                account: this.accountId,
+                cartItems: itemsForApex
+            });
+
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Success',
+                    message: 'Purchase created successfully! Redirecting...',
+                    variant: 'success'
+                })
+            );
+
+            // Redirect to the newly created Purchase record page
+            this[NavigationMixin.Navigate]({
+                type: 'standard__recordPage',
+                attributes: {
+                    recordId: purchaseId,
+                    objectApiName: 'Purchase__c', // API Name of your Purchase object
+                    actionName: 'view'
+                }
+            });
+
+            this.dispatchEvent(new CustomEvent('close')); // Close the modal after checkout
+
+        } catch (error) {
+            console.error('Error during checkout:', error);
+            let message = 'Unknown error during checkout.';
+            if (error && error.body && error.body.message) {
+                message = error.body.message;
+            } else if (error && error.message) {
+                message = error.message;
+            }
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error',
+                    message: message,
+                    variant: 'error'
+                })
+            );
+        }
     }
 }

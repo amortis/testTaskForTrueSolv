@@ -12,8 +12,11 @@ export default class ItemList extends LightningElement {
     @track filteredItems = [];
     @track isLoading = true;
     @track searchKey = '';
-    @track selectedFamily = '';
-    @track selectedType = '';
+    @track selectedFamilies = [];
+    @track selectedTypes = [];
+
+    @track familyOptions = [];
+    @track typeOptions = [];
 
 
 
@@ -21,10 +24,38 @@ export default class ItemList extends LightningElement {
     objectInfo;
 
     @wire(getPicklistValues, { recordTypeId: '$objectInfo.data.defaultRecordTypeId', fieldApiName: FAMILY_FIELD })
-    familyPicklistValues;
+    wiredFamilies({ data, error }) {
+        if (data) {
+            this.familyOptions = [
+                { label: 'All', value: '__all__', isChecked: false },
+                ...data.values.map(opt => ({
+                    label: opt.label,
+                    value: opt.value,
+                    isChecked: false
+                }))
+            ];
+
+        } else {
+            console.error('Error loading family values', error);
+        }
+    }
 
     @wire(getPicklistValues, { recordTypeId: '$objectInfo.data.defaultRecordTypeId', fieldApiName: TYPE_FIELD })
-    typePicklistValues;
+    wiredTypes({ data, error }) {
+        if (data) {
+            this.typeOptions = [
+                { label: 'All', value: '__all__', isChecked: false },
+                ...data.values.map(opt => ({
+                    label: opt.label,
+                    value: opt.value,
+                    isChecked: false
+                }))
+            ];
+
+        } else {
+            console.error('Error loading type values', error);
+        }
+    }
 
     get familyOptions() {
         if (this.familyPicklistValues.error) {
@@ -77,14 +108,69 @@ export default class ItemList extends LightningElement {
     }
 
     handleFamilyChange(event) {
-        this.selectedFamily = event.detail.value;
+        const value = event.target.dataset.value;
+        const isChecked = event.target.checked;
+
+        if (value === '__all__') {
+            // check all or remove all
+            this.familyOptions = this.familyOptions.map(opt => ({
+                ...opt,
+                isChecked
+            }));
+        } else {
+            this.familyOptions = this.familyOptions.map(opt =>
+                opt.value === value ? { ...opt, isChecked } : opt
+            );
+
+
+            const allOption = this.familyOptions.find(opt => opt.value === '__all__');
+            const restChecked = this.familyOptions
+                .filter(opt => opt.value !== '__all__' && opt.isChecked);
+
+            allOption.isChecked = restChecked.length === this.familyOptions.length - 1;
+        }
+
+        // update selectedFamilies
+        this.selectedFamilies = this.familyOptions
+            .filter(opt => opt.isChecked && opt.value !== '__all__')
+            .map(opt => opt.value);
+
         this.applyFilters();
     }
 
     handleTypeChange(event) {
-        this.selectedType = event.detail.value;
+        const value = event.target.dataset.value;
+        const isChecked = event.target.checked;
+
+        if (value === '__all__') {
+
+            this.typeOptions = this.typeOptions.map(opt => ({
+                ...opt,
+                isChecked
+            }));
+        } else {
+
+            this.typeOptions = this.typeOptions.map(opt =>
+                opt.value === value ? { ...opt, isChecked } : opt
+            );
+
+
+            const allOption = this.typeOptions.find(opt => opt.value === '__all__');
+            const restChecked = this.typeOptions
+                .filter(opt => opt.value !== '__all__' && opt.isChecked);
+
+            allOption.isChecked = restChecked.length === this.typeOptions.length - 1;
+        }
+
+
+        this.selectedTypes = this.typeOptions
+            .filter(opt => opt.isChecked && opt.value !== '__all__')
+            .map(opt => opt.value);
+
         this.applyFilters();
     }
+
+
 
     applyFilters() {
         this.filteredItems = this.items.filter(item => {
@@ -92,11 +178,26 @@ export default class ItemList extends LightningElement {
                 (!this.searchKey ||
                     (item.Name && item.Name.toLowerCase().includes(this.searchKey.toLowerCase())) ||
                     (item.Description__c && item.Description__c.toLowerCase().includes(this.searchKey.toLowerCase())));
-            const matchesFamily = !this.selectedFamily || item.Family__c === this.selectedFamily;
-            const matchesType = !this.selectedType || item.Type__c === this.selectedType;
+
+            const matchesFamily =
+                this.selectedFamilies.length === 0 || this.selectedFamilies.includes(item.Family__c);
+
+            const matchesType =
+                this.selectedTypes.length === 0 || this.selectedTypes.includes(item.Type__c);
+
             return matchesSearch && matchesFamily && matchesType;
         });
     }
+
+    isFamilyChecked(value) {
+        return this.selectedFamilies.includes(value);
+    }
+
+    isTypeChecked(value) {
+        return this.selectedTypes.includes(value);
+    }
+
+
 
     handleItemDetails(event) {
         const itemId = event.detail;

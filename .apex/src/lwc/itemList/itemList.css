@@ -1,0 +1,15 @@
+.filter-panel {
+    position: sticky;
+    top: 100px;
+}
+
+.filter-checkbox {
+    max-height: 200px;
+    overflow-y: auto;
+
+    background-color: white;
+    border-radius: 0.5rem; /* или 4px/8px */
+    padding: 0.5rem;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* лёгкая тень, опционально */
+}
