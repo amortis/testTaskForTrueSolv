@@ -133,7 +133,7 @@ export default class ItemPurchaseToolApp extends LightningElement {
         this.dispatchEvent(
             new ShowToastEvent({
                 title: 'Item added to cart',
-                message: 'Item"' + existingItem.Name + '" added to cart.',
+                message: 'Item was added to cart.',
                 variant: 'success'
             })
         );

@@ -9,7 +9,7 @@ import ITEM_OBJECT from '@salesforce/schema/Item__c';
 import FAMILY_FIELD from '@salesforce/schema/Item__c.Family__c';
 import TYPE_FIELD from '@salesforce/schema/Item__c.Type__c';
 
-const SEARCH_DELAY = 500; // milliseconds
+const SEARCH_DELAY = 700; // milliseconds
 
 export default class CreateItemModal extends LightningElement {
     @track itemFields = {
