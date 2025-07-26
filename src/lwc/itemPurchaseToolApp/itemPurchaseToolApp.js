@@ -11,7 +11,7 @@ import USER_ID from '@salesforce/user/Id';
 import USER_IS_MANAGER_FIELD from '@salesforce/schema/User.IsManager__c';
 
 export default class ItemPurchaseToolApp extends LightningElement {
-    @api recordId; // ID текущего Account (получает автоматически при открытии из страницы Account)
+    @api recordId;
 
     @track error = 'def';
     @track showCreateItemModal = false;
@@ -81,10 +81,7 @@ export default class ItemPurchaseToolApp extends LightningElement {
 
     handleCloseCreateItem() {
         this.showCreateItemModal = false;
+        // TODO make page reload
     }
 
-    handleItemCreated() {
-        this.showCreateItemModal = false;
-        // TODO: Update item list
-    }
 }

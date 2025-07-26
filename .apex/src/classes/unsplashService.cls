@@ -7,15 +7,15 @@ public class unsplashService {
 	public static String searchUnsplashImage(String query) {
 
 		External_API_Settings__mdt UNSPLASH_ACCESS_KEY =
-			[SELECT Unsplash_Access_Key__c
-			FROM External_API_Settings__mdt
-			WHERE DeveloperName = 'Unsplash_Access_Key' LIMIT 1];
+		[SELECT Unsplash_Access_Key__c
+		FROM External_API_Settings__mdt
+		WHERE DeveloperName = 'Unsplash_Access_Key' LIMIT 1];
 
 		String imageUrl = null;
 		String encodedQuery = EncodingUtil.urlEncode(query, 'UTF-8');
 		HttpRequest request = new HttpRequest();
 		request.setEndpoint(UNSPLASH_SEARCH_URL + '?query=' + encodedQuery + '&per_page=1&client_id=' +
-				UNSPLASH_ACCESS_KEY.Unsplash_Access_Key__c);
+				UNSPLASH_ACCESS_KEY);
 		request.setMethod('GET');
 
 		Http http = new Http();
@@ -47,10 +47,10 @@ public class unsplashService {
 	}
 
 
-    public static void testRealUnsplashCall(String query) {
-        String url = searchUnsplashImage(query);
-        System.debug('Unsplash image url: ' + url);
-    }
+	public static void testRealUnsplashCall(String query) {
+		String url = searchUnsplashImage(query);
+		System.debug('Unsplash image url: ' + url);
+	}
 
 
 }

@@ -47,10 +47,10 @@ public class unsplashService {
 	}
 
 
-    public static void testRealUnsplashCall(String query) {
-        String url = searchUnsplashImage(query);
-        System.debug('Unsplash image url: ' + url);
-    }
+	public static void testRealUnsplashCall(String query) {
+		String url = searchUnsplashImage(query);
+		System.debug('Unsplash image url: ' + url);
+	}
 
 
 }

@@ -15,9 +15,9 @@ public class unsplashService_Test {
 	@isTest
 	public static void searchUnsplashImage_Unit(){
 		Test.startTest();
-		Test.setMock(HttpCalloutMock.class, new UnsplashMock());
-		String imageUrl = unsplashService.searchUnsplashImage('apple');
-		System.assertEquals('https://test.com/image.jpg', imageUrl);
+			Test.setMock(HttpCalloutMock.class, new UnsplashMock());
+			String imageUrl = unsplashService.searchUnsplashImage('apple');
+			System.assertEquals('https://test.com/image.jpg', imageUrl);
 		Test.stopTest();
 	}
 }
