@@ -15,7 +15,7 @@ public class unsplashService {
 		String encodedQuery = EncodingUtil.urlEncode(query, 'UTF-8');
 		HttpRequest request = new HttpRequest();
 		request.setEndpoint(UNSPLASH_SEARCH_URL + '?query=' + encodedQuery + '&per_page=1&client_id=' +
-				UNSPLASH_ACCESS_KEY);
+				UNSPLASH_ACCESS_KEY.Unsplash_Access_Key__c);
 		request.setMethod('GET');
 
 		Http http = new Http();
@@ -31,7 +31,7 @@ public class unsplashService {
 				if (photos != null && !photos.isEmpty()) {
 					Map<String, Object> firstPhoto = (Map<String, Object>)photos[0];
 					Map<String, Object> urls = (Map<String, Object>)firstPhoto.get('urls');
-					imageUrl = (String)urls.get('small'); // size of image
+					imageUrl = (String)urls.get('regular'); // size of image
 				}
 			} else {
 				System.debug('Unsplash API Error: ' + response.getStatusCode() + ' - ' + response.getStatus());
