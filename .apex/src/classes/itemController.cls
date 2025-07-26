@@ -13,7 +13,9 @@ public class itemController {
     public static Item__c createNewItem(Item__c newItem) {
         try {
             insert newItem;
-            return newItem;
+            return [SELECT Id, Name, Description__c, Type__c, Family__c, Image__c, Price__c
+            FROM Item__c
+            WHERE Id = :newItem.Id];
         } catch (DmlException e) {
             throw new AuraHandledException('Error creating Item: ' + e.getMessage() + ' Details: ' + e.getDmlMessage(0));
         } catch (Exception e) {

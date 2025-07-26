@@ -16,9 +16,7 @@
                             class="slds-m-right_small">
                     </lightning-button>
                 </template>
-                <template if:true={showCreateItemModal}>
-                    <c-create-item-modal onclose={handleCloseCreateItem} onitemcreated={handleItemCreated}></c-create-item-modal>
-                </template>
+
             </div>
 
             <!-- Center - Account Information -->
@@ -68,17 +66,11 @@
             </div>
         </div>
 
-        <!-- Main content area -->
-<!--        <div class="slds-p-around_medium">-->
-<!--            <c-item-list-->
-<!--                    onitemselected={handleItemSelected}-->
-<!--                    onaddtocart={handleAddToCart}-->
-<!--                    account-id={accountData.Id}>-->
-<!--            </c-item-list>-->
-<!--        </div>-->
+
         <template if:false={isLoading}>
             <c-item-list account-id={userId} onitemselected={handleItemSelected} onaddtocart={handleAddToCart}></c-item-list>
         </template>
+
         <template if:true={isLoading}>
             <lightning-spinner alternative-text="Loading..."></lightning-spinner>
         </template>
@@ -93,20 +85,17 @@
         <!-- Cart Modal -->
         <template if:true={showCartModal}>
             <c-cart-modal
-                    initial-cart-items={cartItems} onclose={handleCloseCart}
-                    oncheckout={handleCartCheckout} ></c-cart-modal>
+                    initial-cart-items={cartItems}
+                    onclose={handleCloseCart}
+                    oncheckout={handleCartCheckout}
+                    account-id={recordId}></c-cart-modal>
         </template>
-<!--        <template if:true={showCreateItemModal}>-->
-<!--            <c-create-item-modal-->
-<!--                    onclose={handleCloseCreateItem}-->
-<!--                    onitemcreated={handleItemCreated}>-->
-<!--            </c-create-item-modal>-->
-<!--        </template>-->
+
+        <!-- Creation Item modal -->
+        <template if:true={showCreateItemModal}>
+            <c-create-item-modal onclose={handleCloseCreateItem} onitemcreated={handleItemCreated}></c-create-item-modal>
+        </template>
 
     </div>
 
-    <!-- Modals will be added here -->
-    <!-- Item Details Modal -->
-    <!-- Cart Modal -->
-    <!-- Create Item Modal -->
 </template>

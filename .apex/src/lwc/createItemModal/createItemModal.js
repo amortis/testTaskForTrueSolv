@@ -147,7 +147,7 @@ export default class CreateItemModal extends LightningElement {
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: 'Success',
-                    message: 'Item "' + createdItem.Name + '" created successfully!',
+                    message: 'Item "' + this.itemFields.Name + '" created successfully!',
                     variant: 'success'
                 })
             );

@@ -1,13 +1,32 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api, track, wire } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import createPurchaseAndPurchaseLines from '@salesforce/apex/PurchaseController.createPurchaseAndPurchaseLines';
 
-export default class CartModal extends LightningElement {
+
+import { getRecord } from 'lightning/uiRecordApi';
+// Поля для текущего Account (с которого открыт компонент)
+import ACCOUNT_NAME_FIELD from '@salesforce/schema/Account.Name';
+import ACCOUNT_NUMBER_FIELD from '@salesforce/schema/Account.AccountNumber';
+import ACCOUNT_INDUSTRY_FIELD from '@salesforce/schema/Account.Industry';
+
+
+export default class CartModal extends NavigationMixin(LightningElement) {
     @api initialCartItems = []; // Initial items passed from parent
     @track cartItems = []; // Internal state for cart items, including quantity and total price
     @track overallCartTotal = 0.00;
 
     @api accountId;
+
+    // Данные текущего Account
+    @wire(getRecord, {
+        recordId: '$accountId',
+        fields: [
+            ACCOUNT_NAME_FIELD,
+            ACCOUNT_NUMBER_FIELD,
+            ACCOUNT_INDUSTRY_FIELD
+        ]
+    }) account;
 
 
     connectedCallback() {
@@ -87,16 +106,18 @@ export default class CartModal extends LightningElement {
 
 
         // Map cartItems to the CartItemWrapper structure expected by Apex
-        const itemsForApex = this.cartItems.map(item => ({
-            itemId: item.item.Id, //  item.Id holds the Item__c record ID
-            amount: item.quantity, // item.quantity holds the amount/quantity
-            unitCost: item.Price__c //  item.Price__c holds the unit cost
+        const itemsForApex = this.cartItems.map(cartItem => ({
+            itemId: cartItem.item.Id, //  item.Id holds the Item__c record ID
+            amount: cartItem.quantity, // item.quantity holds the amount/quantity
+            unitCost: cartItem.item.Price__c //  item.Price__c holds the unit cost
         }));
+
+
 
         try {
             const purchaseId = await createPurchaseAndPurchaseLines({
-                account: this.accountId,
-                cartItems: itemsForApex
+                accountId: this.accountId,
+                cartItemsJson: JSON.stringify(itemsForApex)
             });
 
             this.dispatchEvent(
