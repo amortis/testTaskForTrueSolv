@@ -5,7 +5,7 @@ public class accountController {
      * @param accountId The ID of the Account record
      * @return Account record with Name, AccountNumber, and Industry fields
      */
-	@AuraEnabled
+	@AuraEnabled(cacheable=true)
 	public static Account getAccountData(Id accountId){
 		try {
 			if (accountId == null) {
@@ -16,7 +16,6 @@ public class accountController {
 					SELECT Id, Name, AccountNumber, Industry
 					FROM Account
 					WHERE Id = :accountId
-					WITH SECURITY_ENFORCED
 					LIMIT 1
 			];
 

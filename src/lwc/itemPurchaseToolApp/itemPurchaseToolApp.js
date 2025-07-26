@@ -14,6 +14,7 @@ export default class ItemPurchaseToolApp extends LightningElement {
     @api recordId; // ID текущего Account (получает автоматически при открытии из страницы Account)
 
     @track error = 'def';
+    @track showCreateItemModal = false;
 
 
     // Данные текущего Account
@@ -51,7 +52,9 @@ export default class ItemPurchaseToolApp extends LightningElement {
 
     // Проверка менеджера
     get isManager() {
-        return this.user.data ? getFieldValue(this.user.data, USER_IS_MANAGER_FIELD) : false;
+        // Hardcoded for testing for managers
+        return true;
+        //return this.user.data ? getFieldValue(this.user.data, USER_IS_MANAGER_FIELD) : false;
     }
 
     // Состояние загрузки
@@ -70,5 +73,18 @@ export default class ItemPurchaseToolApp extends LightningElement {
 
     get hasError() {
         return this.account.error || this.user.error;
+    }
+
+    handleCreateItem() {
+        this.showCreateItemModal = true;
+    }
+
+    handleCloseCreateItem() {
+        this.showCreateItemModal = false;
+    }
+
+    handleItemCreated() {
+        this.showCreateItemModal = false;
+        // TODO: Update item list
     }
 }

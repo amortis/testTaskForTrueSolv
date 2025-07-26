@@ -16,6 +16,9 @@
                             class="slds-m-right_small">
                     </lightning-button>
                 </template>
+                <template if:true={showCreateItemModal}>
+                    <c-create-item-modal onclose={handleCloseCreateItem} onitemcreated={handleItemCreated}></c-create-item-modal>
+                </template>
             </div>
 
             <!-- Center - Account Information -->

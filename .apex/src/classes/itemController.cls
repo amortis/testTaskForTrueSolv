@@ -8,4 +8,17 @@ public class itemController {
             ORDER BY Name
         ];
     }
+
+    @AuraEnabled
+    public static Item__c createNewItem(Item__c newItem) {
+        try {
+            insert newItem;
+            return newItem;
+        } catch (DmlException e) {
+            throw new AuraHandledException('Error creating Item: ' + e.getMessage() + ' Details: ' + e.getDmlMessage(0));
+        } catch (Exception e) {
+            throw new AuraHandledException('An unexpected error occurred while creating the item: ' + e.getMessage());
+        }
+    }
+
 }
