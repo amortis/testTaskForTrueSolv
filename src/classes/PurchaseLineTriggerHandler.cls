@@ -1,5 +1,12 @@
 public with sharing class PurchaseLineTriggerHandler {
 
+	/**
+     * Recalculates the TotalItems__c and GrandTotal__c fields for each Purchase__c
+     * based on the related PurchaseLine__c records.
+     *
+     * @param purchaseIds A set of Purchase__c record IDs whose totals need to be recalculated.
+     *                    These are typically collected from trigger context on PurchaseLine__c.
+     */
 	public static void recalculatePurchaseTotals(Set<Id> purchaseIds) {
 		if (purchaseIds == null || purchaseIds.isEmpty()) return;
 

@@ -5,7 +5,7 @@ import createPurchaseAndPurchaseLines from '@salesforce/apex/PurchaseController.
 
 
 import { getRecord } from 'lightning/uiRecordApi';
-// Поля для текущего Account (с которого открыт компонент)
+// Account fields
 import ACCOUNT_NAME_FIELD from '@salesforce/schema/Account.Name';
 import ACCOUNT_NUMBER_FIELD from '@salesforce/schema/Account.AccountNumber';
 import ACCOUNT_INDUSTRY_FIELD from '@salesforce/schema/Account.Industry';
@@ -18,7 +18,7 @@ export default class CartModal extends NavigationMixin(LightningElement) {
 
     @api accountId;
 
-    // Данные текущего Account
+    // Account data
     @wire(getRecord, {
         recordId: '$accountId',
         fields: [
@@ -31,7 +31,6 @@ export default class CartModal extends NavigationMixin(LightningElement) {
 
     connectedCallback() {
         // Initialize internal cartItems from initialCartItems
-        // We need to create a deep copy and add quantity and total for each item
         this.cartItems = this.initialCartItems.map(item => ({
             item: item,
             quantity: item.quantity,

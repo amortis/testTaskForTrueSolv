@@ -1,5 +1,8 @@
 public class itemController {
-
+    /**
+     * Retrieve all available Item__c records for display.
+     * @return List of Item__c records with fields: Id, Name, Description__c, Type__c, Family__c, Image__c, and Price__c.
+     */
     @AuraEnabled(cacheable=true)
     public static List<Item__c> getItems() {
         return [
@@ -9,6 +12,12 @@ public class itemController {
         ];
     }
 
+    /**
+     * Create a new Item__c record in the system.
+     * @param newItem The Item__c record to insert.
+     * @return The inserted Item__c record, with full details.
+     * @throws AuraHandledException if the insert fails due to DML errors or unexpected exceptions.
+     */
     @AuraEnabled
     public static Item__c createNewItem(Item__c newItem) {
         try {

@@ -3,6 +3,14 @@ public class unsplashService {
 
 	private static final String UNSPLASH_SEARCH_URL = 'https://api.unsplash.com/search/photos';
 
+	/**
+     * Searches Unsplash for a photo based on the provided query string.
+     * Retrieves the first matching image (if any) and returns its 'regular' size URL.
+     *
+     * @param query The search keyword to pass to Unsplash API (e.g. "apple", "sunset").
+     * @return URL string of the first photo's 'regular' image size, or null if no results found.
+     * @throws AuraHandledException if the API call fails or an unexpected error occurs.
+     */
 	@AuraEnabled
 	public static String searchUnsplashImage(String query) {
 

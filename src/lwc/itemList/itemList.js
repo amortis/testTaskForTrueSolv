@@ -9,7 +9,8 @@ import TYPE_FIELD from '@salesforce/schema/Item__c.Type__c';
 
 export default class ItemList extends LightningElement {
     @track items = []; // Items
-    @track filteredItems = [];
+    @track filteredItems = [];// Filtered items based on search and checkboxes
+
     @track isLoading = true;
     @track searchKey = '';
     @track selectedFamilies = [];
@@ -20,9 +21,11 @@ export default class ItemList extends LightningElement {
 
 
 
+    // Get metadata info to retrieve picklist values
     @wire(getObjectInfo, { objectApiName: ITEM_OBJECT })
     objectInfo;
 
+    // Load Family__c picklist values
     @wire(getPicklistValues, { recordTypeId: '$objectInfo.data.defaultRecordTypeId', fieldApiName: FAMILY_FIELD })
     wiredFamilies({ data, error }) {
         if (data) {
@@ -40,6 +43,7 @@ export default class ItemList extends LightningElement {
         }
     }
 
+    // Load Type__c picklist values
     @wire(getPicklistValues, { recordTypeId: '$objectInfo.data.defaultRecordTypeId', fieldApiName: TYPE_FIELD })
     wiredTypes({ data, error }) {
         if (data) {
@@ -77,10 +81,12 @@ export default class ItemList extends LightningElement {
             : [];
     }
 
+    // Load items when component initializes
     connectedCallback() {
         this.loadItems();
     }
 
+    // Fetch items from Apex
     loadItems() {
         this.isLoading = true;
 
@@ -102,11 +108,13 @@ export default class ItemList extends LightningElement {
         return [{ label: 'All', value: '' }, ...values.map(v => ({ label: v, value: v }))];
     }
 
+    // Handle search bar input
     handleSearchChange(event) {
         this.searchKey = event.target.value;
         this.applyFilters();
     }
 
+    // Handle change in family checkbox group
     handleFamilyChange(event) {
         const value = event.target.dataset.value;
         const isChecked = event.target.checked;
@@ -138,6 +146,7 @@ export default class ItemList extends LightningElement {
         this.applyFilters();
     }
 
+    // Handle change in type checkbox group
     handleTypeChange(event) {
         const value = event.target.dataset.value;
         const isChecked = event.target.checked;
@@ -171,7 +180,7 @@ export default class ItemList extends LightningElement {
     }
 
 
-
+    // Main filter logic: search, family, type
     applyFilters() {
         this.filteredItems = this.items.filter(item => {
             const matchesSearch =
@@ -198,7 +207,7 @@ export default class ItemList extends LightningElement {
     }
 
 
-
+    // Emits item object when user clicks "View details"
     handleItemDetails(event) {
         const itemId = event.detail;
         console.log('Item details clicked, itemId:', itemId);

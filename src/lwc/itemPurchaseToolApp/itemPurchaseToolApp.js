@@ -3,12 +3,12 @@ import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 
-// Поля для текущего Account (с которого открыт компонент)
+// Account fields
 import ACCOUNT_NAME_FIELD from '@salesforce/schema/Account.Name';
 import ACCOUNT_NUMBER_FIELD from '@salesforce/schema/Account.AccountNumber';
 import ACCOUNT_INDUSTRY_FIELD from '@salesforce/schema/Account.Industry';
 
-// Поля для проверки менеджера (User)
+// User fields
 import USER_ID from '@salesforce/user/Id';
 import USER_IS_MANAGER_FIELD from '@salesforce/schema/User.IsManager__c';
 
@@ -25,7 +25,7 @@ export default class ItemPurchaseToolApp extends LightningElement {
     @track cartItems = [];
 
 
-    // Данные текущего Account
+    // Account data
     @wire(getRecord, {
         recordId: '$recordId',
         fields: [
@@ -35,7 +35,7 @@ export default class ItemPurchaseToolApp extends LightningElement {
         ]
     }) account;
 
-    // Вычисляемые свойства для Account
+
     get accountName() {
         return this.account.data ? getFieldValue(this.account.data, ACCOUNT_NAME_FIELD) : 'Loading...';
     }
@@ -50,7 +50,7 @@ export default class ItemPurchaseToolApp extends LightningElement {
 
 
 
-    // Проверка, является ли пользователь менеджером
+    // IsManager check
     @wire(getRecord, {
         recordId: USER_ID,
         fields: [USER_IS_MANAGER_FIELD]
@@ -58,13 +58,11 @@ export default class ItemPurchaseToolApp extends LightningElement {
 
 
 
-    // Проверка менеджера
     get isManager() {
-
         return this.user.data ? getFieldValue(this.user.data, USER_IS_MANAGER_FIELD) : false;
     }
 
-    // Состояние загрузки
+    // Loading
     get isLoading() {
         this.error = getFieldValue(this.account.data, ACCOUNT_NAME_FIELD);
         return this.account.isLoading || this.user.isLoading || !this.account.data || !this.user.data;

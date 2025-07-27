@@ -1,5 +1,17 @@
 public class purchaseController {
 
+	/**
+     * Creates a new Purchase__c record and related PurchaseLine__c records based on the provided cart items.
+     *
+     * @param accountId The ID of the Account associated with the purchase.
+     * @param cartItemsJson A JSON string representing the list of cart items, each containing:
+     *                      - itemId (String): ID of the Item__c
+     *                      - amount (Integer): Quantity of the item
+     *                      - unitCost (Decimal): Unit price of the item
+     * @return The ID of the newly created Purchase__c record.
+     * @throws AuraHandledException if accountId or cartItemsJson is missing or invalid,
+     *                              or if any DML or parsing error occurs.
+     */
 	@AuraEnabled
 	public static Id createPurchaseAndPurchaseLines(Id accountId, String cartItemsJson) {
 		if (accountId == null || String.isBlank(cartItemsJson)) {
