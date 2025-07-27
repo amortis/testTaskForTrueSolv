@@ -3,7 +3,7 @@ private class itemController_Test {
 
 	@isTest
 	static void testGetItems() {
-		// Arrange: создаём тестовые товары
+		// Arrange: test items
 		Item__c item1 = new Item__c(
 				Name = 'Test Item 1',
 				Description__c = 'First item',
@@ -32,7 +32,7 @@ private class itemController_Test {
 
 	@isTest
 	static void testCreateNewItem_success() {
-		// Arrange: создаём новый Item__c без вставки
+		// Arrange: Item__c without insertion
 		Item__c newItem = new Item__c(
 				Name = 'New Test Item',
 				Description__c = 'Created in test',
@@ -52,7 +52,7 @@ private class itemController_Test {
 
 	@isTest
 	static void testCreateNewItem_failure() {
-		// Arrange: создаём item без обязательных полей
+		// Arrange: Item__c without required fields
 		Item__c badItem = new Item__c(); // No required fields
 
 		Boolean exceptionThrown = false;

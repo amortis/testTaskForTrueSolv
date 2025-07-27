@@ -6,7 +6,7 @@ public class unsplashService_Test {
 		public HTTPResponse respond(HTTPRequest req) {
 			HttpResponse res = new HttpResponse();
 			res.setHeader('Content-Type', 'application/json');
-			res.setBody('{"results":[{"urls":{"small":"https://test.com/image.jpg"}}]}');
+			res.setBody('{"results":[{"urls":{"regular":"https://test.com/image.jpg"}}]}');
 			res.setStatusCode(200);
 			return res;
 		}

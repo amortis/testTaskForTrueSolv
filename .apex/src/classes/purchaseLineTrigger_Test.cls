@@ -3,25 +3,25 @@ private class purchaseLineTrigger_Test {
 
 	@isTest
 	static void testTriggerRecalculation_onInsertUpdateDelete() {
-		// Step 1: Setup Account
+		// setup Account
 		Account acc = new Account(Name = 'Trigger Test Account');
 		insert acc;
 
-		// Step 2: Setup Purchase
+		// setup Purchase
 		Purchase__c purchase = new Purchase__c(
 				Name = 'Trigger Test Purchase',
 				ClientId__c = acc.Id
 		);
 		insert purchase;
 
-		// Step 3: Setup Item
+		// setup Item
 		Item__c item = new Item__c(
 				Name = 'Trigger Test Item',
 				Price__c = 25.00
 		);
 		insert item;
 
-		// Step 4: INSERT PurchaseLine__c (Triggers INSERT)
+		// INSERT PurchaseLine__c (Triggers INSERT)
 		PurchaseLine__c line = new PurchaseLine__c(
 				PurchaseId__c = purchase.Id,
 				ItemId__c = item.Id,
@@ -37,7 +37,7 @@ private class purchaseLineTrigger_Test {
 		System.assertEquals(2, updatedPurchase.TotalItems__c, 'Insert: total items should be 2');
 		System.assertEquals(50.00, updatedPurchase.GrandTotal__c, 'Insert: total price should be 50');
 
-		// Step 5: UPDATE line (Triggers UPDATE)
+		// UPDATE line (Triggers UPDATE)
 		line.Amount__c = 4;
 		update line;
 
@@ -47,7 +47,7 @@ private class purchaseLineTrigger_Test {
 		System.assertEquals(4, updatedPurchase.TotalItems__c, 'Update: total items should be 4');
 		System.assertEquals(100.00, updatedPurchase.GrandTotal__c, 'Update: total price should be 100');
 
-		// Step 6: DELETE line (Triggers DELETE)
+		// DELETE line (Triggers DELETE)
 		delete line;
 
 		updatedPurchase = [

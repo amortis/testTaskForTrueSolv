@@ -3,7 +3,7 @@ public class purchaseController {
 	@AuraEnabled
 	public static Id createPurchaseAndPurchaseLines(Id accountId, String cartItemsJson) {
 		if (accountId == null || String.isBlank(cartItemsJson)) {
-			throw new AuraHandledException('Account ID and cart items are required.' + String.isBlank(cartItemsJson));
+			throw new AuraHandledException('Account ID and cart items are required.');
 		}
 
 		List<Object> rawItems = (List<Object>) JSON.deserializeUntyped(cartItemsJson);

@@ -1,6 +1,6 @@
 import { LightningElement, wire, api } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
-import getHelloWorld from '@salesforce/apex/helloWorldController.getHelloWorld';
+
 
 // Import the current user's ID
 import USER_ID from '@salesforce/user/Id';
