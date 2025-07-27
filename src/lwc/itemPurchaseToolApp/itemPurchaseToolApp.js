@@ -67,7 +67,7 @@ export default class ItemPurchaseToolApp extends LightningElement {
 
     // Состояние загрузки
     get isLoading() {
-        this.error = getFieldValue(this.account.data, ACCOUNT_NAME_FIELD) + '1111111';
+        this.error = getFieldValue(this.account.data, ACCOUNT_NAME_FIELD);
         return this.account.isLoading || this.user.isLoading || !this.account.data || !this.user.data;
     }
 
@@ -84,7 +84,13 @@ export default class ItemPurchaseToolApp extends LightningElement {
     }
 
     get cartItemCount() {
-        return this.cartItems.length > 0 ? this.cartItems.length.toString() : null;
+
+        if (!this.cartItems || this.cartItems.length === 0) {
+            return null;
+        }
+
+        const total = this.cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        return total.toString();
     }
 
 
@@ -121,21 +127,30 @@ export default class ItemPurchaseToolApp extends LightningElement {
     // Add item to cart
     handleAddToCart(event) {
         const item = event.detail;
-        const existingItem = this.cartItems.find(cartItem => cartItem.Id === item.Id);
-        
+
+        const existingItem = this.cartItems.find(cartItem => String(cartItem.Id) === String(item.Id));
+
         if (existingItem) {
+
             existingItem.quantity = (existingItem.quantity || 1) + 1;
             this.cartItems = [...this.cartItems]; // Force reactivity
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Item ' + item.Name +  ' added to cart',
+                    variant: 'success'
+                })
+            );
 
         } else {
             this.cartItems.push({ ...item, quantity: 1 });
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Item ' + item.Name +  ' added to cart',
+                    variant: 'success'
+                })
+            );
         }
-        this.dispatchEvent(
-            new ShowToastEvent({
-                title: 'Item added to cart',
-                variant: 'success'
-            })
-        );
+
     }
 
     handleItemCreated(event){

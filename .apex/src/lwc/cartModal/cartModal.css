@@ -1,0 +1,8 @@
+.quantity-control {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-input {
+    width: 60px;
+}

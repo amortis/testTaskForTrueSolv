@@ -34,8 +34,8 @@ export default class CartModal extends NavigationMixin(LightningElement) {
         // We need to create a deep copy and add quantity and total for each item
         this.cartItems = this.initialCartItems.map(item => ({
             item: item,
-            quantity: 1, // Default quantity
-            totalPrice: item.Price__c // Initialize total price
+            quantity: item.quantity,
+            totalPrice: item.Price__c * item.quantity // Initialize total price
         }));
         this.calculateOverallCartTotal();
     }
@@ -88,6 +88,40 @@ export default class CartModal extends NavigationMixin(LightningElement) {
     handleClose() {
         this.dispatchEvent(new CustomEvent('close'));
     }
+
+    handleDecreaseQuantity(event) {
+        const itemId = event.target.dataset.itemId;
+        this.cartItems = this.cartItems.map(cartItem => {
+            if (cartItem.item.Id === itemId) {
+                const quantity = Math.max(1, (cartItem.quantity || 1) - 1);
+                return {
+                    ...cartItem,
+                    quantity,
+                    totalPrice: cartItem.item.Price__c * quantity
+                };
+            }
+            return cartItem;
+        });
+        this.calculateOverallCartTotal();
+    }
+
+    handleIncreaseQuantity(event) {
+        const itemId = event.target.dataset.itemId;
+        this.cartItems = this.cartItems.map(cartItem => {
+            if (cartItem.item.Id === itemId) {
+                const quantity = (cartItem.quantity || 1) + 1;
+                return {
+                    ...cartItem,
+                    quantity,
+                    totalPrice: cartItem.item.Price__c * quantity
+                };
+            }
+            return cartItem;
+        });
+        this.calculateOverallCartTotal();
+    }
+
+
 
     // Handles the checkout process
     async handleCheckout() {

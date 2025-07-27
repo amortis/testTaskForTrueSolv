@@ -41,14 +41,36 @@
                                     <div class="slds-truncate" title={cartItem.item.Name}>{cartItem.item.Name}</div>
                                 </td>
                                 <td data-label="Quantity">
-                                    <lightning-input
-                                            type="number"
-                                            value={cartItem.quantity}
-                                            data-item-id={cartItem.item.Id}
-                                            onchange={handleQuantityChange}
-                                            min="1"
-                                            class="slds-text-align_center"
-                                    ></lightning-input>
+                                    <div class="quantity-control slds-grid slds-align_absolute-center">
+                                        <lightning-button-icon
+                                                icon-name="utility:dash"
+                                                alternative-text="Decrease"
+                                                title="Decrease"
+                                                onclick={handleDecreaseQuantity}
+                                                data-item-id={cartItem.item.Id}
+                                                variant="border-filled"
+                                                size="small"
+                                        ></lightning-button-icon>
+
+                                        <lightning-input
+                                                type="number"
+                                                value={cartItem.quantity}
+                                                data-item-id={cartItem.item.Id}
+                                                onchange={handleQuantityChange}
+                                                min="1"
+                                                class="slds-m-horizontal_x-small quantity-input"
+                                        ></lightning-input>
+
+                                        <lightning-button-icon
+                                                icon-name="utility:add"
+                                                alternative-text="Increase"
+                                                title="Increase"
+                                                onclick={handleIncreaseQuantity}
+                                                data-item-id={cartItem.item.Id}
+                                                variant="border-filled"
+                                                size="small"
+                                        ></lightning-button-icon>
+                                    </div>
                                 </td>
                                 <td data-label="Price">
                                     <div class="slds-truncate">{cartItem.item.Price__c}</div>
