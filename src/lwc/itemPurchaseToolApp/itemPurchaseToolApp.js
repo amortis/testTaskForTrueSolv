@@ -60,9 +60,8 @@ export default class ItemPurchaseToolApp extends LightningElement {
 
     // Проверка менеджера
     get isManager() {
-        // Hardcoded for testing for managers
-        return true;
-        //return this.user.data ? getFieldValue(this.user.data, USER_IS_MANAGER_FIELD) : false;
+
+        return this.user.data ? getFieldValue(this.user.data, USER_IS_MANAGER_FIELD) : false;
     }
 
     // Состояние загрузки
